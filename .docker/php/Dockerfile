@@ -20,7 +20,8 @@ RUN echo 'xdebug.mode=debug' >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.client_port=9003' >>  /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.start_with_request = yes' >>  /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.client_host = "127.0.0.1"' >>  /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo 'xdebug.idekey = VSCODE' >>  /usr/local/etc/php/conf.d/xdebug.ini
+    && echo 'xdebug.idekey = VSCODE' >>  /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo 'xdebug.log_level = 0' >>  /usr/local/etc/php/conf.d/xdebug.ini
 
 
 # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.

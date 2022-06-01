@@ -17,7 +17,7 @@ services:
       - php
   mock:
     image: stoplight/prism:latest
-    command: "mock -h 0.0.0.0 /tmp/specs/petstore.yaml"
+    command: "mock -h 0.0.0.0 /tmp/specs/static-example.yaml"
     volumes:
       - ./packages/php-openapi-faker/tests/specs:/tmp/specs:ro
     ports:
