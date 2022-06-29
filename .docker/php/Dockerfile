@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:7.4-fpm
 
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
@@ -22,7 +22,6 @@ RUN echo 'xdebug.mode=debug' >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.client_host = "127.0.0.1"' >>  /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.idekey = VSCODE' >>  /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'xdebug.log_level = 0' >>  /usr/local/etc/php/conf.d/xdebug.ini
-
 
 # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
 RUN groupadd --gid $USER_GID $USERNAME \
