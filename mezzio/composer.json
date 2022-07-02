@@ -45,7 +45,8 @@
         "laminas/laminas-stdlib": "^3.6",
         "mezzio/mezzio": "^3.7",
         "mezzio/mezzio-helpers": "^5.7",
-        "mezzio/mezzio-laminasrouter": "^3.0.1"
+        "mezzio/mezzio-laminasrouter": "^3.0.1",
+        "symfony/cache": "5.4.x-dev"
     },
     "require-dev": {
         "laminas/laminas-development-mode": "^3.3.0",

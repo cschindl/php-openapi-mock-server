@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\OpenApiMockMiddlewareFactory;
+use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -30,6 +32,7 @@ return [
         'factories' => [
             ResponseFactoryInterface::class => \Laminas\Diactoros\ResponseFactory::class,
             StreamFactoryInterface::class => \Laminas\Diactoros\StreamFactory::class,
+            OpenApiMockMiddleware::class => OpenApiMockMiddlewareFactory::class,
         ],
     ],
 ];
