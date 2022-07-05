@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
+use Cschindl\OpenAPIMock\ResponseFaker;
+use Cschindl\OpenAPIMock\RequestValidator;
+use Cschindl\OpenAPIMock\ResponseValidator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -33,16 +36,18 @@ class OpenApiMockMiddlewareFactory implements FactoryInterface
         $cache = new RedisTagAwareAdapter($client);
 
         return new OpenApiMockMiddleware(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(StreamFactoryInterface::class),
-            $cache,
-            $pathToYaml,
-            [
-                'minItems' => 5,
-                'maxItems' => 10,
-                'alwaysFakeOptionals' => true,
-                'strategy' => Options::STRATEGY_STATIC,
-            ]
+            RequestValidator::fromPath($pathToYaml, $cache),
+            ResponseValidator::fromPath($pathToYaml, $cache),
+            new ResponseFaker(
+                $container->get(ResponseFactoryInterface::class),
+                $container->get(StreamFactoryInterface::class),
+                [
+                    'minItems' => 5,
+                    'maxItems' => 10,
+                    'alwaysFakeOptionals' => true,
+                    'strategy' => Options::STRATEGY_STATIC,
+                ]
+            )
         );
     }
 }
