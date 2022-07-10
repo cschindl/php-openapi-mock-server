@@ -14,7 +14,6 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
-use Vural\OpenAPIFaker\Options;
 
 return [
     'settings' => function () {
@@ -34,13 +33,13 @@ return [
         return $container->get(Psr17Factory::class);
     },
     CacheItemPoolInterface::class => function (ContainerInterface $container) {
-        $client = RedisAdapter::createConnection('redis://redis:6379');
+        $client = RedisAdapter::createConnection($container->get('settings')['cache']['dsn']);
 
         return new RedisTagAwareAdapter($client);
     },
 
     OpenApiMockMiddleware::class => function (ContainerInterface $container) {
-        $pathToYaml = __DIR__ . '/../data/spec.yaml';
+        $pathToYaml = $container->get('settings')['openApi']['specFile'];
 
         return new OpenApiMockMiddleware(
             RequestValidator::fromPath($pathToYaml, $container->get(CacheItemPoolInterface::class)),
@@ -48,12 +47,7 @@ return [
             new ResponseFaker(
                 $container->get(ResponseFactoryInterface::class),
                 $container->get(StreamFactoryInterface::class),
-                [
-                    'minItems' => 5,
-                    'maxItems' => 10,
-                    'alwaysFakeOptionals' => true,
-                    'strategy' => Options::STRATEGY_STATIC,
-                ]
+                $container->get('settings')['openApi']['faker']
             ),
             new ErrorResponseGenerator(
                 $container->get(ResponseFactoryInterface::class),
