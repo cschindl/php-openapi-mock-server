@@ -1,9 +1,6 @@
-.build
-.phpcs-cache
-composer.lock
-vendor
-coverage
-.phpunit.result.cache
 .idea
 .devcontainer
 .vscode
+composer.lock
+vendor
+packages
