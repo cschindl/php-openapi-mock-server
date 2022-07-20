@@ -2,9 +2,8 @@
 
 use Cschindl\OpenAPIMock\ErrorResponseGenerator;
 use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
-use Cschindl\OpenAPIMock\RequestValidator;
 use Cschindl\OpenAPIMock\ResponseFaker;
-use Cschindl\OpenAPIMock\ResponseValidator;
+use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
@@ -19,13 +18,11 @@ return [
     'settings' => function () {
         return require __DIR__ . '/settings.php';
     },
-
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
 
         return AppFactory::create();
     },
-
     ResponseFactoryInterface::class => function (ContainerInterface $container) {
         return $container->get(Psr17Factory::class);
     },
@@ -33,17 +30,21 @@ return [
         return $container->get(Psr17Factory::class);
     },
     CacheItemPoolInterface::class => function (ContainerInterface $container) {
-        $client = RedisAdapter::createConnection($container->get('settings')['cache']['dsn']);
-
-        return new RedisTagAwareAdapter($client);
+        return new RedisTagAwareAdapter(
+            RedisAdapter::createConnection($container->get('settings')['cache']['dsn'])
+        );
     },
-
     OpenApiMockMiddleware::class => function (ContainerInterface $container) {
         $pathToYaml = $container->get('settings')['openApi']['specFile'];
 
+        $validatorBuilder = (new ValidatorBuilder)->fromYamlFile($pathToYaml);
+        $cache = $container->get(CacheItemPoolInterface::class);
+        if ($cache instanceof CacheItemPoolInterface) {
+            $validatorBuilder->setCache($cache);
+        }
+
         return new OpenApiMockMiddleware(
-            RequestValidator::fromPath($pathToYaml, $container->get(CacheItemPoolInterface::class)),
-            ResponseValidator::fromPath($pathToYaml, $container->get(CacheItemPoolInterface::class)),
+            $validatorBuilder,
             new ResponseFaker(
                 $container->get(ResponseFactoryInterface::class),
                 $container->get(StreamFactoryInterface::class),

@@ -24,9 +24,9 @@ services:
       - cache:/data
   mock:
     image: stoplight/prism:latest
-    command: "mock -h 0.0.0.0 /tmp/specs/static-example.yaml"
+    command: "mock -h 0.0.0.0 /tmp/specs/spec.yaml"
     volumes:
-      - ./packages/php-openapi-faker/tests/specs:/tmp/specs:ro
+      - ./data:/tmp/specs:ro
     ports:
       - "4010:4010"
 volumes:
