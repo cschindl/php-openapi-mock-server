@@ -30,8 +30,12 @@ return [
         return $container->get(Psr17Factory::class);
     },
     CacheItemPoolInterface::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings')['cache'];
+
         return new RedisTagAwareAdapter(
-            RedisAdapter::createConnection($container->get('settings')['cache']['dsn'])
+            RedisAdapter::createConnection($settings['dsn']),
+            '',
+            $settings['ttl'],
         );
     },
     OpenApiMockMiddleware::class => function (ContainerInterface $container) {

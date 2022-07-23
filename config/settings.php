@@ -13,6 +13,7 @@ ini_set('display_errors', '1');
 $settings = [
     'cache' => [
         'dsn' => 'redis://redis:6379',
+        'ttl' => 300,
     ],
     'openApi' => [
         'specFile' => __DIR__ . '/../data/spec.yaml',
