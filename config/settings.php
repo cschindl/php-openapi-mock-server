@@ -18,9 +18,9 @@ $settings = [
     'openApi' => [
         'specFile' => __DIR__ . '/../data/spec.yaml',
         'faker' => [
-            'minItems' => 5,
+            'minItems' => 1,
             'maxItems' => 10,
-            'alwaysFakeOptionals' => true,
+            'alwaysFakeOptionals' => false,
             'strategy' => Options::STRATEGY_STATIC,
         ],
     ],
