@@ -1,8 +1,11 @@
 <?php
 
-use Cschindl\OpenAPIMock\ErrorResponseGenerator;
 use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
-use Cschindl\OpenAPIMock\ResponseFaker;
+use Cschindl\OpenAPIMock\Request\RequestHandler;
+use Cschindl\OpenAPIMock\Validator\RequestValidator;
+use Cschindl\OpenAPIMock\Response\ResponseFaker;
+use Cschindl\OpenAPIMock\Response\ResponseHandler;
+use Cschindl\OpenAPIMock\Validator\ResponseValidator;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Cache\CacheItemPoolInterface;
@@ -47,17 +50,17 @@ return [
             $validatorBuilder->setCache($cache);
         }
 
+        $reponseFaker = new ResponseFaker(
+            $container->get(ResponseFactoryInterface::class),
+            $container->get(StreamFactoryInterface::class),
+            $container->get('settings')['openApi']['faker']
+        );
+
         return new OpenApiMockMiddleware(
-            $validatorBuilder,
-            new ResponseFaker(
-                $container->get(ResponseFactoryInterface::class),
-                $container->get(StreamFactoryInterface::class),
-                $container->get('settings')['openApi']['faker']
-            ),
-            new ErrorResponseGenerator(
-                $container->get(ResponseFactoryInterface::class),
-                $container->get(StreamFactoryInterface::class),
-            )
+            new RequestHandler($reponseFaker),
+            new RequestValidator($validatorBuilder),
+            new ResponseHandler($reponseFaker),
+            new ResponseValidator($validatorBuilder)
         );
     },
 ];
