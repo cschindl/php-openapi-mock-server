@@ -8,7 +8,7 @@
     },
     "require": {
         "php": "^8.0 || ^8.1 || ^8.2",
-        "cschindl/php-openapi-faker": "dev-master",
+        "canvural/php-openapi-faker": "dev-master",
         "cschindl/php-openapi-mock-middleware": "dev-master",
         "nyholm/psr7": "^1.5",
         "nyholm/psr7-server": "^1.0",
@@ -22,8 +22,16 @@
             "url": "./packages/php-openapi-faker"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/cschindl/php-openapi-faker"
+        },
+        {
             "type": "path",
             "url": "./packages/php-openapi-mock-middleware"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/cschindl/php-openapi-mock-middleware"
         }
     ],
     "minimum-stability": "dev"
