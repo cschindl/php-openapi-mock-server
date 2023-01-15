@@ -1,14 +1,11 @@
 {
     "name": "cschindl/php-openapi-mock-server",
     "description": "MockServer to generate fake data for OpenAPI response.",
-    "type": "project",
     "license": "BSD-3-Clause",
-    "config": {
-        "sort-packages": true
-    },
+    "type": "project",
     "require": {
         "php": "^8.0 || ^8.1 || ^8.2",
-        "canvural/php-openapi-faker": "dev-master",
+        "canvural/php-openapi-faker": "^2.1",
         "cschindl/php-openapi-mock-middleware": "dev-master",
         "nyholm/psr7": "^1.5",
         "nyholm/psr7-server": "^1.0",
@@ -16,15 +13,10 @@
         "slim/slim": "4.*",
         "symfony/cache": "5.4.x-dev"
     },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.29"
+    },
     "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/php-openapi-faker"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/cschindl/php-openapi-faker"
-        },
         {
             "type": "path",
             "url": "./packages/php-openapi-mock-middleware"
@@ -34,5 +26,17 @@
             "url": "https://github.com/cschindl/php-openapi-mock-middleware"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Cschindl\\OpenAPIMockServer\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        },
+        "sort-packages": true
+    }
 }
