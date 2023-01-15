@@ -14,7 +14,10 @@
         "symfony/cache": "5.4.x-dev"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.29"
+        "ergebnis/composer-normalize": "^2.29",
+        "phpspec/prophecy": "^1.16",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.5"
     },
     "repositories": [
         {
