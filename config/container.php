@@ -1,8 +1,8 @@
 <?php
 
-use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
-use Cschindl\OpenAPIMock\OpenApiMockMiddlewareConfig;
-use Cschindl\OpenAPIMock\OpenApiMockMiddlewareFactory;
+use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddleware;
+use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddlewareConfig;
+use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddlewareFactory;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;

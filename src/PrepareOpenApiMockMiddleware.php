@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cschindl\OpenAPIMockServer;
+namespace Cschindl\OpenApiMockMiddlewareServer;
 
-use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
+use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
