@@ -17,6 +17,8 @@ $settings = [
     ],
     'openApi' => [
         'specFile' => __DIR__ . '/../data/spec.yaml',
+        'validateRequest' => true,
+        'validateRsponse' => true,
         'faker' => [
             'minItems' => 1,
             'maxItems' => 10,

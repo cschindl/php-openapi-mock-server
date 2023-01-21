@@ -1,12 +1,8 @@
 <?php
 
 use Cschindl\OpenAPIMock\OpenApiMockMiddleware;
-use Cschindl\OpenAPIMock\Request\RequestHandler;
-use Cschindl\OpenAPIMock\Validator\RequestValidator;
-use Cschindl\OpenAPIMock\Response\ResponseFaker;
-use Cschindl\OpenAPIMock\Response\ResponseHandler;
-use Cschindl\OpenAPIMock\Validator\ResponseValidator;
-use League\OpenAPIValidation\PSR7\ValidatorBuilder;
+use Cschindl\OpenAPIMock\OpenApiMockMiddlewareConfig;
+use Cschindl\OpenAPIMock\OpenApiMockMiddlewareFactory;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
@@ -16,6 +12,7 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
+use Vural\OpenAPIFaker\Options;
 
 return [
     'settings' => function () {
@@ -42,25 +39,26 @@ return [
         );
     },
     OpenApiMockMiddleware::class => function (ContainerInterface $container) {
-        $pathToYaml = $container->get('settings')['openApi']['specFile'];
+        $settings = $container->get('settings')['openApi'];
 
-        $validatorBuilder = (new ValidatorBuilder)->fromYamlFile($pathToYaml);
-        $cache = $container->get(CacheItemPoolInterface::class);
-        if ($cache instanceof CacheItemPoolInterface) {
-            $validatorBuilder->setCache($cache);
-        }
+        $options = (new Options())
+            ->setMinItems($settings['faker']['minItems'])
+            ->setMaxItems($settings['faker']['maxItems'])
+            ->setAlwaysFakeOptionals($settings['faker']['alwaysFakeOptionals'])
+            ->setStrategy($settings['faker']['strategy']);
 
-        $reponseFaker = new ResponseFaker(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(StreamFactoryInterface::class),
-            $container->get('settings')['openApi']['faker']
+        $config = new OpenApiMockMiddlewareConfig(
+            $settings['validateRequest'],
+            $settings['validateRsponse'],
+            $options
         );
 
-        return new OpenApiMockMiddleware(
-            new RequestHandler($reponseFaker),
-            new RequestValidator($validatorBuilder),
-            new ResponseHandler($reponseFaker),
-            new ResponseValidator($validatorBuilder)
+        return OpenApiMockMiddlewareFactory::createFromYamlFile(
+            $settings['specFile'],
+            $container->get(ResponseFactoryInterface::class),
+            $container->get(StreamFactoryInterface::class),
+            $config,
+            $container->get(CacheItemPoolInterface::class),
         );
     },
 ];
