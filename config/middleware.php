@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddleware;
-use Cschindl\OpenApiMockMiddlewareServer\PrepareOpenApiMockMiddleware;
+use Cschindl\OpenApiMockServer\PrepareOpenApiMockMiddleware;
 use Slim\App;
 
 return function (App $app) {

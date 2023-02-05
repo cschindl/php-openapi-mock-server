@@ -1,9 +1,10 @@
 <?php
 
-// Should be set to 0 in production
+declare(strict_types=1);
 
 use Vural\OpenAPIFaker\Options;
 
+// Should be set to 0 in production
 error_reporting(E_ALL);
 
 // Should be set to '0' in production
@@ -16,13 +17,13 @@ $settings = [
         'ttl' => 300,
     ],
     'openApi' => [
-        'specFile' => __DIR__ . '/../data/spec.yaml',
+        'specFile' => __DIR__ . '/../data/petstore.yml',
         'validateRequest' => true,
-        'validateRsponse' => true,
+        'validateResponse' => true,
         'faker' => [
             'minItems' => 1,
-            'maxItems' => 10,
-            'alwaysFakeOptionals' => false,
+            'maxItems' => 1,
+            'alwaysFakeOptionals' => true,
             'strategy' => Options::STRATEGY_STATIC,
         ],
     ],

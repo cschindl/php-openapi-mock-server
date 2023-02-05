@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddleware;
 use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddlewareConfig;
 use Cschindl\OpenApiMockMiddleware\OpenApiMockMiddlewareFactory;
@@ -49,15 +51,15 @@ return [
 
         $config = new OpenApiMockMiddlewareConfig(
             $settings['validateRequest'],
-            $settings['validateRsponse'],
+            $settings['validateResponse'],
             $options
         );
 
         return OpenApiMockMiddlewareFactory::createFromYamlFile(
             $settings['specFile'],
+            $config,
             $container->get(ResponseFactoryInterface::class),
             $container->get(StreamFactoryInterface::class),
-            $config,
             $container->get(CacheItemPoolInterface::class),
         );
     },
